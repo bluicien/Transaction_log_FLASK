@@ -11,12 +11,12 @@ transactions = [
 ]
 
 # Read operation
-@app.route("/")
+@app.route('/')
 def get_transactions():
     return render_template("transactions.html", transactions=transactions)
 
 # Create operation
-@app.route('/add', methods=['GET', 'POST'])
+app.route('/add', methods=['GET', 'POST'])
 def add_transaction() :
     if request.method == 'POST':
         transaction = {
@@ -35,51 +35,25 @@ def edit_transaction(transaction_id) :
     if request.method == 'POST':
         for transaction in transactions:
             if transaction['id'] == transaction_id:
-                transaction['date'] = request.form['date']
-                transaction['amount'] = float(request.form['amount'])
+                transaction['date'] == request.form.date
+                transaction['amount'] == float(request.form.amount)
                 break
 
-        return redirect(url_for('get_transactions'))
+        return redirect(url_for(get_transactions))
 
     for transaction in transactions:
         if transaction['id'] == transaction_id:
             return render_template('edit.html', transaction=transaction)
 
 # Delete operation
-@app.route('/delete/<int:transaction_id>')
+@app.route('/delete/<int:transaction_id>', methods=['DELETE'])
 def delete_transaction(transaction_id):
         for transaction in transactions:
             if transaction['id'] == transaction_id:
                 transactions.remove(transaction)
                 break
 
-        return redirect(url_for('get_transactions'))
-
-# Search function
-@app.route('/search', methods=['GET', 'POST'])
-def search_transactions() :
-    if request.method == 'POST':
-        min_amount = float(request.form['min_amount'])
-        max_amount = float(request.form['max_amount'])
-        filtered_list = []
-        for transaction in transactions:
-            if transaction['amount'] >= min_amount and transaction['amount'] <= max_amount:
-                filtered_list.append(transaction)
-        return render_template('transactions.html', transactions=filtered_list)
-    
-    return render_template('search.html')
-
-
-# Total Balance
-@app.route('/balance')
-def total_balance():
-    total_balance = 0
-    float(total_balance)
-
-    for transaction in transactions:
-        total_balance = total_balance + float(transaction['amount'])
-    balance = f"Total Balance: {total_balance}"
-    return render_template('transactions.html', transactions=transactions, balance=balance)
+        return redirect(url_for(get_transactions))
 
 # Run the Flask app
 if __name__ == "__main__":
